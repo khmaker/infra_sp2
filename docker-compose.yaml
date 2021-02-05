@@ -16,11 +16,11 @@ services:
     env_file: ./api_yamdb/.env
     command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py loaddata fixture.json && gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - static_volume:/home/app/web/static
+      - ./static:/home/app/web/static
   nginx:
     build: ./nginx
     volumes:
-    - static_volume:/static
+    - ./static:/static
     ports:
     - 8000:80
     depends_on:
@@ -29,4 +29,3 @@ services:
 
 volumes:
   postgres_data:
-  static_volume:
