@@ -20,5 +20,3 @@ __pycache__/
 db.sqlite3
 
 sent_emails
-
-api_yamdb/.env
