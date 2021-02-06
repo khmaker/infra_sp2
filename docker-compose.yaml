@@ -3,29 +3,36 @@ version: '3.7'
 services:
   db:
     image: postgres:12.0-alpine
+    container_name: db
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file: ./api_yamdb/.env
+
   web:
     build: .
+    container_name: web
     restart: always
     expose:
       - 8000
     depends_on:
       - db
     env_file: ./api_yamdb/.env
-    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py loaddata fixture.json && gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000"
-    volumes:
-      - ./static:/home/app/web/static
+    command: bash -c "python manage.py migrate
+                      && python manage.py collectstatic --noinput
+                      && gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000"
+
   nginx:
-    build: ./nginx
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
     volumes:
-    - ./static:/static
+    - ./static:/home/app/web/static
+    - ./nginx:/etc/nginx/conf.d
     ports:
     - 8000:80
     depends_on:
       - web
-
 
 volumes:
   postgres_data:

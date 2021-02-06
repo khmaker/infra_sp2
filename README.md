@@ -1,87 +1,100 @@
-# Project Title
+# YaMDb
 
-One Paragraph of project description goes here
+## База отзывов о фильмах, книгах и музыке
 
-## Getting Started
+Проект YaMDb собирает отзывы (Review) пользователей на произведения (Title).
+Произведения делятся на категории: «Книги», «Фильмы», «Музыка». Список
+категорий (Category) может быть расширен (например, можно добавить категорию
+«Изобразительное искусство» или «Ювелирка»).
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Сами произведения в YaMDb не хранятся, здесь нельзя посмотреть фильм или
+послушать музыку.
 
-### Prerequisites
+В каждой категории есть произведения: книги, фильмы или музыка. Например, в
+категории «Книги» могут быть произведения «Винни Пух и все-все-все» и
+«Марсианские хроники», а в категории «Музыка» — песня «Давеча» группы
+«Насекомые» и вторая сюита Баха. Произведению может быть присвоен жанр из
+списка предустановленных (например, «Сказка», «Рок» или «Артхаус»). Новые жанры
+может создавать только администратор.
 
-What things you need to install the software and how to install them
+Благодарные или возмущённые читатели оставляют к произведениям текстовые
+отзывы (Review) и выставляют произведению рейтинг (оценку в диапазоне от одного
+до десяти). Из множества оценок автоматически высчитывается средняя оценка
+произведения.
 
+## Техническое описание
+
+[Файл с техническим описанием](SPECS.md)
+
+## Запуск
+
+### Требования к системе
+
+Для запуска проекта в системе должен быть
+установлен [Docker](https://www.docker.com/)
+
+### Необходимые данные
+
+В файле [./api_yamdb/.env](./api_yamdb/.env) замените следующие значения:
+
+* ```POSTGRES_DB``` имя базы данных
+* ```POSTGRES_USER``` имя пользователя базы данных
+* ```POSTGRES_PASSWORD``` пароль пользователя базы данных
+* ```SECRET_KEY``` Секретный ключ. Используется для 
+  [криптографической подписи](https://djbook.ru/rel3.0/topics/signing.html), 
+  должен быть случайным и сложным для подбора. Можно сгенерировать по
+  ссылке https://djecrety.ir/.
+* ```ALLOWED_HOSTS``` Список хостов/доменов, для которых может работать текущий
+  сайт. Это сделано для безопасности, чтобы обезопасить от внедрения в куки или
+  письма для сброса пароля ссылок на сторонний сайт подменив HTTP заголовок
+  Host, что возможно при многих, казалось бы безопасных, конфигурациях сервера.
+  Свои адреса можно добавить к уже указанным через пробел.
+
+### Команда для запуска проекта
+
+#### Создать образы, тома, контейнеры и запустить контейнеры
+
+Запускается в каталоге с файлами из командной оболочки.
+
+```shell
+docker-compose up -d --build
 ```
-Give examples
+Если все получилось, 
+то документация будет доступна 
+[здесь](http://localhost:8000/redoc).
+### Команды для работы с проектом
+Команды для создания учетной записи администратора, 
+заполнения базы тестовыми данными 
+и стирания базы выполняются внутри контейнера.
+#### Вход в командную оболочку контейнера
+```shell
+docker exec -it web bash
 ```
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
+#### Заполнение базы тестовыми данными
+```shell
+python manage.py loaddata fixture.json
 ```
-Give the example
+#### Создание учетной записи администратора
+```shell
+python manage.py createsuperuser
 ```
-
-And repeat
-
+Понадобится ввести имя, адрес электронной почты и пароль.
+#### Стирание базы
+```shell
+python manage.py flush
 ```
-until finished
-```
+База будет стерта целиком. 
+Учетную запись администратора придется создать снова.
+#### Выход из командной оболочки контейнера
+Выход осуществляется последовательным нажатием двух сочетаний клавиш: 
+```Ctrl+P``` и ```Ctrl+Q```
 
-End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
 
-Explain how to run the automated tests for this system
+## Создано при помощи
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* [Django](https://www.djangoproject.com/)
+* [Django REST framework](https://www.django-rest-framework.org/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [nginx](https://nginx.org/ru/)
+* [Docker](https://www.docker.com/)
