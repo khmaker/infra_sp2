@@ -69,15 +69,15 @@ WSGI_APPLICATION = 'api_yamdb.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'default': {
+                'ENGINE': os.environ.get('DB_ENGINE'),
+                'NAME': os.environ.get('POSTGRES_DB'),
+                'USER': os.environ.get('POSTGRES_USER'),
+                'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+                'HOST': os.environ.get('DB_HOST'),
+                'PORT': os.environ.get('DB_PORT'),
+                }
         }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -129,8 +129,8 @@ REST_FRAMEWORK = {
         'DEFAULT_AUTHENTICATION_CLASSES': [
                 'rest_framework_simplejwt.authentication.JWTAuthentication',
                 ],
-        'DEFAULT_PAGINATION_CLASS':
-                'rest_framework.pagination.PageNumberPagination',
+        'DEFAULT_PAGINATION_CLASS': [
+                'rest_framework.pagination.PageNumberPagination'],
         'PAGE_SIZE': 100,
         'DEFAULT_FILTER_BACKENDS': [
                 'django_filters.rest_framework.DjangoFilterBackend'],
