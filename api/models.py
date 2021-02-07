@@ -1,6 +1,7 @@
 from datetime import date
 
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator as MaxVV
+from django.core.validators import MinValueValidator as MinVV
 from django.db import models
 
 from users.models import User
@@ -38,7 +39,7 @@ class Title(models.Model):
     genre = models.ManyToManyField(Genre,
                                    verbose_name='genre')
     name = models.CharField(max_length=150, verbose_name='name')
-    year = models.IntegerField(validators=MaxValueValidator(date.today().year),
+    year = models.IntegerField(validators=(MaxVV(date.today().year), ),
                                verbose_name='year')
     description = models.TextField(max_length=150,
                                    verbose_name='description')
@@ -62,8 +63,8 @@ class Review(models.Model):
     text = models.TextField(max_length=500,
                             verbose_name='text')
     score = models.IntegerField(default=0,
-                                validators=(MinValueValidator(1),
-                                            MaxValueValidator(10)),
+                                validators=(MinVV(1),
+                                            MaxVV(10)),
                                 verbose_name='score')
     pub_date = models.DateTimeField(auto_now_add=True,
                                     verbose_name='publication date')
