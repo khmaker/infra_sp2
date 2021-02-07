@@ -17,7 +17,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS',
+                               default='localhost 127.0.0.1').split(' ')
 
 # Application definition
 
@@ -49,18 +50,18 @@ ROOT_URLCONF = 'api_yamdb.urls'
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
         {
-                'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                'DIRS': [TEMPLATES_DIR],
-                'APP_DIRS': True,
-                'OPTIONS': {
-                        'context_processors': [
-                                'django.template.context_processors.debug',
-                                'django.template.context_processors.request',
-                                'django.contrib.auth.context_processors.auth',
-                                'django.contrib.messages.context_processors.messages',
-                                ],
-                        },
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [TEMPLATES_DIR],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                        ],
                 },
+            },
         ]
 
 WSGI_APPLICATION = 'api_yamdb.wsgi.application'
@@ -69,15 +70,15 @@ WSGI_APPLICATION = 'api_yamdb.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-                'ENGINE': os.environ.get('DB_ENGINE'),
-                'NAME': os.environ.get('POSTGRES_DB'),
-                'USER': os.environ.get('POSTGRES_USER'),
-                'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-                'HOST': os.environ.get('DB_HOST'),
-                'PORT': os.environ.get('DB_PORT'),
-                }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', default='postgres'),
+        'USER': os.environ.get('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
         }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

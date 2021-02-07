@@ -49,6 +49,17 @@
   письма для сброса пароля ссылок на сторонний сайт подменив HTTP заголовок
   Host, что возможно при многих, казалось бы безопасных, конфигурациях сервера.
   Свои адреса можно добавить к уже указанным через пробел.
+  
+#### пример заполненного файла .env
+```
+POSTGRES_DB=yamdb
+POSTGRES_USER=yamdb_user
+POSTGRES_PASSWORD=password
+
+SECRET_KEY=96&630tiif-bw#i3i!fu$!0j)9_*bxdmwppgu(&e0dz-zuu5=o
+
+ALLOWED_HOSTS=localhost 127.0.0.1
+```
 
 ### Команда для запуска проекта
 
@@ -70,6 +81,10 @@ docker-compose up -d --build
 ```shell
 docker exec -it web bash
 ```
+#### Создание структуры базы данных
+```shell
+python manage.py migrate
+```
 #### Заполнение базы тестовыми данными
 ```shell
 python manage.py loaddata fixture.json
@@ -83,7 +98,7 @@ python manage.py createsuperuser
 ```shell
 python manage.py flush
 ```
-База будет стерта целиком. 
+База будет стерта целиком. При этом структура базы сохранится. <br>
 Учетную запись администратора придется создать снова.
 #### Выход из командной оболочки контейнера
 Выход осуществляется последовательным нажатием двух сочетаний клавиш: 

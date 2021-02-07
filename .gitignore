@@ -16,7 +16,7 @@ __pycache__/
 *.sublime-project
 *.sublime-workspace
 
-
+/api_yamdb/.env
 db.sqlite3
 
 sent_emails
