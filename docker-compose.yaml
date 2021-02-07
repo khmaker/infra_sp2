@@ -19,7 +19,7 @@ services:
       - db
     env_file: ./api_yamdb/.env
     volumes:
-      - ./static:/home/app/web/static
+      - static:/home/app/web/static
     command: bash -c "python manage.py migrate
                       && python manage.py collectstatic --noinput
                       && gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000"
@@ -29,7 +29,7 @@ services:
     container_name: nginx
     restart: always
     volumes:
-    - ./static:/home/app/web/static
+    - static:/home/app/web/static
     - ./nginx:/etc/nginx/conf.d
     ports:
     - 8000:80
@@ -38,3 +38,4 @@ services:
 
 volumes:
   postgres_data:
+  static:
