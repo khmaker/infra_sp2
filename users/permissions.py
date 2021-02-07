@@ -19,7 +19,7 @@ class IsStaffOrAuthorOrReadOnly(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
-            return (request.user.is_admin() or
-                    request.user.is_moderator() or
-                    obj.author == request.user)
+            return (request.user.is_admin()
+                    or request.user.is_moderator()
+                    or obj.author == request.user)
         return request.method in SAFE_METHODS
