@@ -1,6 +1,7 @@
 from datetime import date
-from django.db import models
+
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 from users.models import User
 
@@ -37,9 +38,8 @@ class Title(models.Model):
     genre = models.ManyToManyField(Genre,
                                    verbose_name='genre')
     name = models.CharField(max_length=150, verbose_name='name')
-    year = models.IntegerField(
-            validators=(MaxValueValidator(date.today().year),),
-            verbose_name='year')
+    year = models.IntegerField(validators=MaxValueValidator(date.today().year),
+                               verbose_name='year')
     description = models.TextField(max_length=150,
                                    verbose_name='description')
 

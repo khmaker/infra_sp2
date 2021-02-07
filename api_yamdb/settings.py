@@ -45,8 +45,7 @@ MIDDLEWARE = ['django.middleware.security.SecurityMiddleware',
 ROOT_URLCONF = 'api_yamdb.urls'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
-TEMPLATES = [
-    {
+TEMPLATES = [{
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
@@ -57,7 +56,7 @@ TEMPLATES = [
                     'django.contrib.auth.context_processors.auth',
                     'django.contrib.messages.context_processors.messages', ],
                     },
-        },
+            },
     ]
 
 WSGI_APPLICATION = 'api_yamdb.wsgi.application'
