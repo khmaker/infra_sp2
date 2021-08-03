@@ -33,7 +33,7 @@ services:
     - static:/home/app/web/static
     - ./nginx:/etc/nginx/conf.d
     ports:
-    - 8000:80
+    - "8000:80"
     depends_on:
       - web
 
