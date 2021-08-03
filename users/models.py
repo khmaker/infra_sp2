@@ -1,4 +1,6 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+# coding=utf-8
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import BaseUserManager
 from django.db import models
 
 
@@ -36,16 +38,22 @@ class User(AbstractUser):
         verbose_name = 'user'
         verbose_name_plural = 'users'
 
-    bio = models.TextField(max_length=500,
-                           blank=True,
-                           null=True,
-                           verbose_name='biography')
-    role = models.CharField(max_length=9,
-                            choices=Roles.choices,
-                            default=Roles.user,
-                            verbose_name='role')
-    email = models.EmailField(unique=True,
-                              verbose_name='email')
+    bio = models.TextField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name='biography'
+        )
+    role = models.CharField(
+        max_length=9,
+        choices=Roles.choices,
+        default=Roles.user,
+        verbose_name='role'
+        )
+    email = models.EmailField(
+        unique=True,
+        verbose_name='email'
+        )
 
     def is_admin(self):
         return self.role == self.Roles.admin or self.is_superuser
