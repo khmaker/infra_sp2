@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 
 import environ
@@ -17,21 +18,24 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='1')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS',
-                               default='localhost 127.0.0.1').split(' ')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    default='localhost 127.0.0.1'
+    ).split(' ')
 
 # Application definition
 
-INSTALLED_APPS = ['django.contrib.admin',
-                  'django.contrib.auth',
-                  'django.contrib.contenttypes',
-                  'django.contrib.sessions',
-                  'django.contrib.messages',
-                  'django.contrib.staticfiles',
-                  'rest_framework',
-                  'django_filters',
-                  'users',
-                  'api', ]
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters',
+    'users',
+    'api', ]
 
 MIDDLEWARE = ['django.middleware.security.SecurityMiddleware',
               'django.contrib.sessions.middleware.SessionMiddleware',
@@ -45,48 +49,62 @@ MIDDLEWARE = ['django.middleware.security.SecurityMiddleware',
 ROOT_URLCONF = 'api_yamdb.urls'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
-TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates',
-              'DIRS': [TEMPLATES_DIR],
-              'APP_DIRS': True,
-              'OPTIONS': {'context_processors': ['django.template.'
-                                                 'context_processors.debug',
-                                                 'django.template.'
-                                                 'context_processors.request',
-                                                 'django.contrib.auth.'
-                                                 'context_processors.auth',
-                                                 'django.contrib.messages.'
-                                                 'context_processors.'
-                                                 'messages', ], }, }, ]
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [TEMPLATES_DIR],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors': [
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    }, ]
 
 WSGI_APPLICATION = 'api_yamdb.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {'default': {'ENGINE': 'django.db.backends.postgresql',
-                         'NAME': os.environ.get('POSTGRES_DB',
-                                                default='postgres'),
-                         'USER': os.environ.get('POSTGRES_USER',
-                                                default='postgres'),
-                         'PASSWORD': os.environ.get('POSTGRES_PASSWORD',
-                                                    default='postgres'),
-                         'HOST': os.environ.get('DB_HOST',
-                                                default='db'),
-                         'PORT': os.environ.get('DB_PORT',
-                                                default=5432), }}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', default='postgres'),
+        'USER': os.environ.get('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.environ.get('DB_HOST', default='localhost'),
+        'PORT': os.environ.get('DB_PORT', default=5432),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 
-AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation'
-                                     '.UserAttributeSimilarityValidator', },
-                            {'NAME': 'django.contrib.auth.password_validation'
-                                     '.MinimumLengthValidator', },
-                            {'NAME': 'django.contrib.auth.password_validation'
-                                     '.CommonPasswordValidator', },
-                            {'NAME': 'django.contrib.auth.password_validation'
-                                     '.NumericPasswordValidator', }, ]
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME':
+            'django.contrib.auth.password_validation'
+            '.UserAttributeSimilarityValidator',
+        },
+    {
+        'NAME':
+            'django.contrib.auth.password_validation'
+            '.MinimumLengthValidator',
+        },
+    {
+        'NAME':
+            'django.contrib.auth.password_validation'
+            '.CommonPasswordValidator',
+        },
+    {
+        'NAME':
+            'django.contrib.auth.password_validation'
+            '.NumericPasswordValidator',
+        },
+    ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -108,17 +126,21 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.'
-                                                 'AllowAny', ],
-                  'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_'
-                                                     'simplejwt.'
-                                                     'authentication.'
-                                                     'JWTAuthentication', ],
-                  'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.'
-                                               'PageNumberPagination'],
-                  'PAGE_SIZE': 100,
-                  'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.'
-                                              'DjangoFilterBackend'], }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+        ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ],
+    'DEFAULT_PAGINATION_CLASS': [
+        'rest_framework.pagination.PageNumberPagination'
+        ],
+    'PAGE_SIZE': 100,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+        ],
+    }
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
