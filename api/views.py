@@ -1,67 +1,87 @@
+# coding=utf-8
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, mixins, viewsets
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework import filters
+from rest_framework.filters import SearchFilter
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import DestroyModelMixin
+from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import UpdateModelMixin
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import ModelViewSet
 
-from users.permissions import IsAdminOrReadOnly, IsStaffOrAuthorOrReadOnly
-from .filters import TitleFilter
-from .models import Category, Genre, Review, Title
-from .serializers import CategorySerializer, CommentSerializer, \
-    GenreSerializer, ReviewSerializer, TitleListRetrieveSerializer, \
-    TitleSerializer
+from api.filters import TitleFilter
+from api.models import Category
+from api.models import Genre
+from api.models import Review
+from api.models import Title
+from api.serializers import CategorySerializer
+from api.serializers import CommentSerializer
+from api.serializers import GenreSerializer
+from api.serializers import ReviewSerializer
+from api.serializers import TitleListRetrieveSerializer
+from api.serializers import TitleSerializer
+from users.permissions import IsAdminOrReadOnly
+from users.permissions import IsStaffOrAuthorOrReadOnly
 
 
-class GenreViewSet(mixins.CreateModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin,
-                   mixins.ListModelMixin,
-                   GenericViewSet):
+class GenreViewSet(
+        CreateModelMixin,
+        UpdateModelMixin,
+        DestroyModelMixin,
+        ListModelMixin,
+        GenericViewSet
+        ):
     lookup_field = 'slug'
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', ]
-    http_method_names = ['get', 'post', 'delete']
+    permission_classes = (IsAdminOrReadOnly,)
+    filter_backends = (SearchFilter,)
+    search_fields = ('name',)
+    http_method_names = ('get', 'post', 'delete')
 
 
-class CommentViewSet(viewsets.ModelViewSet):
+class CommentViewSet(ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = (IsStaffOrAuthorOrReadOnly,)
 
     def get_queryset(self, *args, **kwargs):
-        review = get_object_or_404(Review,
-                                   pk=self.kwargs.get('review_id'),
-                                   title_id=self.kwargs.get('title_id'),
-                                   )
+        review = get_object_or_404(
+            Review,
+            pk=self.kwargs.get('review_id'),
+            title_id=self.kwargs.get('title_id'),
+            )
         return review.comments.all()
 
     def perform_create(self, serializer):
-        review = get_object_or_404(Review,
-                                   pk=self.kwargs.get('review_id'),
-                                   title_id=self.kwargs.get('title_id'),
-                                   )
+        review = get_object_or_404(
+            Review,
+            pk=self.kwargs.get('review_id'),
+            title_id=self.kwargs.get('title_id'),
+            )
         serializer.save(author=self.request.user, review=review)
 
 
-class CategoryViewSet(mixins.CreateModelMixin,
-                      mixins.UpdateModelMixin,
-                      mixins.DestroyModelMixin,
-                      mixins.ListModelMixin,
-                      GenericViewSet):
+class CategoryViewSet(
+        CreateModelMixin,
+        UpdateModelMixin,
+        DestroyModelMixin,
+        ListModelMixin,
+        GenericViewSet
+        ):
     lookup_field = 'slug'
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', ]
-    http_method_names = ['get', 'post', 'delete']
+    search_fields = ('name',)
+    http_method_names = ('get', 'post', 'delete')
 
 
-class TitleViewSet(viewsets.ModelViewSet):
+class TitleViewSet(ModelViewSet):
     queryset = Title.objects.annotate(rating=Avg('reviews__score'))
     serializer_class = TitleSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = (IsAdminOrReadOnly,)
     filterset_class = TitleFilter
 
     def get_serializer_class(self):

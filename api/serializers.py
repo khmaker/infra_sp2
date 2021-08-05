@@ -1,13 +1,19 @@
-from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, SlugRelatedField, \
-    ValidationError
+# coding=utf-8
+from rest_framework.fields import IntegerField
+from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import SlugRelatedField
+from rest_framework.serializers import ValidationError
 
-from .models import Category, Comment, Genre, Review, Title
+from api.models import Category
+from api.models import Comment
+from api.models import Genre
+from api.models import Review
+from api.models import Title
 
 
-class GenreSerializer(serializers.ModelSerializer):
+class GenreSerializer(ModelSerializer):
     class Meta:
-        fields = ['name', 'slug']
+        fields = ('name', 'slug')
         model = Genre
         lookup_field = 'slug'
 
@@ -20,9 +26,9 @@ class CommentSerializer(ModelSerializer):
         fields = ('id', 'text', 'author', 'pub_date')
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(ModelSerializer):
     class Meta:
-        fields = ['name', 'slug']
+        fields = ('name', 'slug')
         model = Category
         lookup_field = 'slug'
 
@@ -44,12 +50,12 @@ class ReviewSerializer(ModelSerializer):
         return attrs
 
 
-class RepresentationField(serializers.SlugRelatedField):
+class RepresentationField(SlugRelatedField):
     def to_representation(self, value):
         return {'name': value.name, 'slug': value.slug}
 
 
-class TitleSerializer(serializers.ModelSerializer):
+class TitleSerializer(ModelSerializer):
     category = RepresentationField(slug_field='slug',
                                    queryset=Category.objects.all()
                                    )
@@ -64,4 +70,4 @@ class TitleSerializer(serializers.ModelSerializer):
 
 
 class TitleListRetrieveSerializer(TitleSerializer):
-    rating = serializers.IntegerField(read_only=True)
+    rating = IntegerField(read_only=True)
