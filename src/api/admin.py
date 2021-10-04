@@ -1,11 +1,7 @@
 # coding=utf-8
 from django.contrib import admin
 
-from api.models import Category
-from api.models import Comment
-from api.models import Genre
-from api.models import Review
-from api.models import Title
+from api.models import Category, Comment, Genre, Review, Title
 
 admin.site.register(Title)
 admin.site.register(Genre)
