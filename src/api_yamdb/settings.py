@@ -1,10 +1,9 @@
 # coding=utf-8
 import os
 
-import environ
+from dotenv import load_dotenv
 
-env = environ.Env()
-environ.Env.read_env()
+load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,9 +14,9 @@ DEBUG = int(os.environ.get('DEBUG', default=0))
 ALLOWED_HOSTS = os.environ.get(
     'ALLOWED_HOSTS',
     default='localhost 127.0.0.1'
-).split(' ')
+).split()
 
-INSTALLED_APPS = [
+INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,16 +26,18 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'users',
-    'api', ]
+    'api',
+)
 
-MIDDLEWARE = ['django.middleware.security.SecurityMiddleware',
-              'django.contrib.sessions.middleware.SessionMiddleware',
-              'django.middleware.common.CommonMiddleware',
-              'django.middleware.csrf.CsrfViewMiddleware',
-              'django.contrib.auth.middleware.AuthenticationMiddleware',
-              'django.contrib.messages.middleware.MessageMiddleware',
-              'django.middleware.clickjacking.XFrameOptionsMiddleware',
-              ]
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
 
 ROOT_URLCONF = 'api_yamdb.urls'
 
