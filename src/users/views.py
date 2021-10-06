@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.contrib.auth.tokens import default_token_generator as dtg
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
@@ -25,7 +26,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         detail=False,
         permission_classes=[permissions.IsAuthenticated],
         url_path='me'
-        )
+    )
     def get_me(self, request):
         serializer = UserSerializer(self.request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -36,7 +37,7 @@ class UsersViewSet(viewsets.ModelViewSet):
             self.request.user,
             data=self.request.data,
             partial=True
-            )
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -55,7 +56,7 @@ class CreateUserAPIView(APIView):
         user.email_user(
             subject='Confirmation_code for yamdb',
             message=dtg.make_token(user)
-            )
+        )
         return Response(data='Check your mail', status=status.HTTP_201_CREATED)
 
 
@@ -70,9 +71,9 @@ class GetTokenAPIView(APIView):
             return Response(
                 data='Invalid Confirmation_code',
                 status=status.HTTP_403_FORBIDDEN
-                )
+            )
         refresh = RefreshToken.for_user(user)
         return Response(
             data={'token': str(refresh.access_token)},
             status=status.HTTP_201_CREATED
-            )
+        )

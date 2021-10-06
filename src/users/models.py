@@ -43,17 +43,17 @@ class User(AbstractUser):
         blank=True,
         null=True,
         verbose_name='biography'
-        )
+    )
     role = models.CharField(
         max_length=9,
         choices=Roles.choices,
         default=Roles.user,
         verbose_name='role'
-        )
+    )
     email = models.EmailField(
         unique=True,
         verbose_name='email'
-        )
+    )
 
     def is_admin(self):
         return self.role == self.Roles.admin or self.is_superuser

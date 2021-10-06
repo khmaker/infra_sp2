@@ -13,6 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'bio',
             'role',
-            )
+        )
         model = User
         lookup_field = 'username'
